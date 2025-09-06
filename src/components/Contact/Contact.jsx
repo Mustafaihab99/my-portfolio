@@ -154,7 +154,41 @@ export default function ContactSection() {
           value={form.message}
           onChange={(e) => setForm((s) => ({ ...s, message: e.target.value }))}
         />
-        {/* Buttons remain the same */}
+        {/* Buttons */}
+        <div className="flex items-center gap-4">
+          <button
+            type="submit"
+            disabled={status.loading}
+            className="px-4 py-3 rounded-md font-medium bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-md hover:scale-105 transition-all duration-200 disabled:opacity-60">
+            {status.loading ? "Sending..." : "Send Message"}
+          </button>
+          <button
+            type="button"
+            onClick={() =>
+              setForm({ name: "", email: "", subject: "", message: "" })
+            }
+            className="px-4 py-2 rounded-md border border-gray-700 text-gray-500 hover:bg-gray-800 transition">
+            Reset
+          </button>
+        </div>
+
+        {/* Popup Toast */}
+        <AnimatePresence>
+          {showPopup && (
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 40 }}
+              className="fixed bottom-6 right-6 z-50">
+              <div
+                className={`px-6 py-4 rounded-lg shadow-xl text-white font-medium ${
+                  status.error ? "bg-red-600" : "bg-green-600"
+                }`}>
+                {status.error || status.success}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.form>
     </motion.section>
   );
